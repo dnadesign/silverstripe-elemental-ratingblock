@@ -1,0 +1,217 @@
+.rating {
+    text-align: center;
+    width: 100%;
+    padding: 35px 0 40px;
+    position: relative;
+    z-index: 999;
+    background: #404042;
+    border-top: 1px solid rgba(255,255,255,.3);
+    border-bottom: 1px solid rgba(255,255,255,.3);
+
+    @include respond(md) {
+        padding: 55px 0 60px;
+    }
+
+    @include respond(print) {
+        display: none;
+    }
+
+    &__form {
+        padding: 0 20px 0;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+
+        @include respond(md) {
+            padding: 0 20px 0;
+        }
+
+        &--hidden {
+            display: none;
+        }
+    }
+
+    &__title {
+        color: #fff;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        padding: 0;
+        margin: 0;
+
+        .rating--disabled & {
+            opacity: 0.6;
+        }
+    }
+    
+    &__into,
+    &__result,
+    &__message {
+        padding: 12px 0 0;
+
+        p {
+            color: #fff;
+            margin-top: 0;
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'FiraSans', Arial, sans-serif;
+        }
+
+        *:last-child {
+            margin-bottom: 0;
+        }
+
+        a {
+            color: #fff;
+            border-bottom: 1px dashed rgba(#fff, 0.8);
+            opacity: 1;
+            transition: 0.3s all;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        .rating--disabled & {
+            opacity: 0.6;
+        }
+    } 
+
+    &__stars {
+        padding: 20px 0 0;
+    }
+
+    &__comments-outer {
+        padding: 10px 0;
+    }
+
+    &__comments-field {
+        margin: 0;
+        padding: 6px 0;
+
+        label {
+            display: block;
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        textarea {
+            border: none;
+            font-size: 16px;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 2px;
+            background-color: rgba(#fff, 0.12);
+            width: 100%;
+            max-width: 600px;
+            resize: vertical;
+            font-family: 'Gustan', Arial, sans-serif;
+        }
+
+        .rating--disabled & {
+            opacity: 0.6;
+        }
+    }
+
+    &__comments-toggle {
+        font-size: 16px;
+        line-height: 24px;
+        background: none;
+        border: none;
+        box-shadow: none;
+        color: #fff;
+        opacity: 1;
+        transition: all 300ms;
+        padding: 6px 10px;
+        font-family: 'Gustan', Arial, sans-serif;
+
+        &:hover,
+        &:active {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
+        &:after {
+            content: ' ';
+            display: inline-block;
+            vertical-align: middle;
+            width: 5px;
+            height: 10px;
+            margin-left: 8px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: svg-load('rating-chevron.svg', fill=#ffffff);
+            background-size: cover;
+            transform: rotate(90deg);
+            transition: all 300ms;
+
+            .rating--expanded & {
+                transform: rotate(-90deg) !important;
+            }
+        }
+
+        .rating--disabled & {
+            opacity: 0.6;
+        }
+    }
+
+    &__comments {
+        overflow: hidden;
+        max-height: 0px;
+        transition:  max-height 300ms;
+
+        &--expanded {
+            max-height: 500px;
+        }
+    }
+
+    &__error {
+        color: #fff;
+        margin: 0;
+        padding: 4px 0 10px;
+        font-size: 14px;
+        line-height: 16px;
+        font-family: 'FiraSans', Arial, sans-serif;
+        font-style: italic;
+    }
+
+    &__loading {
+        opacity: 0.6;
+        padding: 12px 0 0;
+
+        .loading {
+            height: 24px;
+            min-height: 24px;
+        }
+
+        .MuiCircularProgress-root {
+            width: 24px !important;
+            height: 24px !important;
+        }
+
+        circle {
+            color: #fff !important;
+        }
+    }
+
+    .button--rating {
+        margin: 12px auto 0;
+        max-width: 140px;
+        width: 100%;
+
+        &[disabled] {
+            opacity: 0.6;
+            background: #ccc;
+            border-color: #ccc;
+
+            &:focus,
+            &:hover {
+                opacity: 0.6;
+                background: #ccc;
+                border-color: #ccc;
+            }
+        }
+    }
+}
+

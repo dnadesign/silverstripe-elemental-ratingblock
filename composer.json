@@ -1,0 +1,39 @@
+{
+    "name": "dnadesign/silverstripe-elemental-ratingblock",
+    "description": "Rating block for Business.govt's SilverStripe CMS",
+    "type": "silverstripe-vendormodule",
+    "license": "BSD-3-Clause",
+    "require": {
+        "silverstripe/framework": "^4.5",
+        "silverstripe/graphql": "^3",
+        "silverstripe/vendor-plugin": "^1",
+        "colymba/gridfield-bulk-editing-tools": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "silverstripe/cms": "^4.5",
+        "silverstripe/graphql-devtools": "dev-master"
+    },
+    "extra": {
+        "expose": [
+            "client/dist",
+            "client/lang"
+        ]
+    },
+    "scripts": {
+        "lint": "phpcs -s code/ tests/",
+        "lint-clean": "phpcbf code/ tests/"
+    },
+    "autoload": {
+        "psr-4": {
+            "SilverStripe\\AssetAdmin\\": "code/",
+            "SilverStripe\\AssetAdmin\\Tests\\": "tests/php/",
+            "SilverStripe\\AssetAdmin\\Tests\\Behat\\Context\\": "tests/behat/src/"
+        }
+    },
+    "config": {
+        "process-timeout": 600
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
