@@ -1,27 +1,29 @@
-DNADesign\Elemental\Model\ElementRatingBlock:
-  stars:
-    nah:
-      tags:
-        - nah
-        - very nah
-        - extremely nah
-    meh:
-      tags:
-          - meh
-          - very meh
-          - extremely meh
-    ok:
-      tags:
-        - ok
-        - very ok
-        - extremely ok
-    woop:
-      tags:
-        - woop woop
-        - very woop woop
-        - extremely woop woop
-    wow:
-      tags:
-        - wow
-        - very wow
-        - extremely wow
+# Default stars and tags example
+# Set yours in code before first dev/build and those should be created automatically
+# DNADesign\Elemental\Model\ElementRatingBlock:
+#   stars:
+#     nah:
+#       tags:
+#         - nah
+#         - very nah
+#         - extremely nah
+#     meh:
+#       tags:
+#           - meh
+#           - very meh
+#           - extremely meh
+#     ok:
+#       tags:
+#         - ok
+#         - very ok
+#         - extremely ok
+#     woop:
+#       tags:
+#         - woop woop
+#         - very woop woop
+#         - extremely woop woop
+#     wow:
+#       tags:
+#         - wow
+#         - very wow
+#         - extremely wow

@@ -2,6 +2,9 @@
 import { observable, action } from 'mobx';
 import gql from 'graphql-tag';
 import Cookie from 'mobx-cookie';
+import { HttpLink } from 'apollo-link-http';
+import ApolloClient from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const RatingMutation = gql`
     mutation RatingMutation(
@@ -32,19 +35,50 @@ const RatingMutation = gql`
     }
 `;
 
-export default class AppStore {
+export default class RatingStore {
     httpStore;
 
     // reference for page name
     pageName = 'unknown';
 
     static getInstance(props) {
-        return (AppStore.instance || (AppStore.instance = new AppStore(props)));
+        return (
+            RatingStore.instance || (RatingStore.instance = new RatingStore(props))
+        );
     }
 
     constructor(props) {
         this.httpStore = props.httpStore;
         this.pageName = props.pageName;
+
+        this.httpLink = new HttpLink({
+            uri: this.getApiUri(),
+            credentials: 'same-origin'
+        });
+
+        this.apolloClient = this.setApolloClient();
+
+        this.setCookiePage();
+    }
+
+    getApiUri() {
+        const location = window.location.host;
+
+        if (
+            window.location.hostname === 'localhost' ||
+            window.location.hostname === '10.0.2.2'
+        ) {
+            return '//mbie9.test/ratingblockgraphql/';
+        }
+
+        return `//${location}/ratingblockgraphql/`;
+    }
+
+    setApolloClient() {
+        return new ApolloClient({
+            link: this.httpStore.authLink.concat(this.httpLink),
+            cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
+        });
     }
 
     @observable error = null;
@@ -54,21 +88,74 @@ export default class AppStore {
     @observable submitted = false;
 
     // Store value in a mobx-observable cookie
-    @observable rateCookie = new Cookie(this.getCookieName('Rate'));
-    @observable tagsCookie = new Cookie(this.getCookieName('Tags'));
+    @observable cookie = new Cookie(this.getCookieName('RateElement'));
 
-    getCookieName(cookieType) {
-        const encoded = window.btoa(window.location.href + window.location.search);
-        return `${this.pageName}${cookieType}-${encoded}`;
+    setCookiePage() {
+        const cookieValue = this.cookie.value;
+        if (cookieValue && cookieValue !== "undefined") {
+            let values = JSON.parse(cookieValue);
+            const valueIndex = values.findIndex(item => item.url === window.location.href);
+
+            if (valueIndex === -1) {
+                values.push({ url: window.location.href });
+                this.cookie.set(JSON.stringify(values), { expires: 1 });
+            }
+        } else {
+            const values = [{ url: window.location.href }];
+            this.cookie.set(JSON.stringify(values), { expires: 1 });
+        }
     }
 
-    // get cookie
-    setRateCookie(value) {
-        this.rateCookie.set(value, { expires: 1 });
+    getCookieName(cookieType) {
+        const encoded = window.btoa(cookieType);
+        return encoded;
+    }
+
+    getRateValue() {
+        const cookieValue = this.cookie.value;
+        if (cookieValue) {
+            const values = JSON.parse(cookieValue);
+            const valueIndex = values.findIndex(item => item.url === window.location.href);
+
+            if (valueIndex > -1) {
+                return values[valueIndex].rating;
+            }
+        }
+
+        return null;
+    }
+    getTagsValue() {
+        const cookieValue = this.cookie.value;
+        if (cookieValue) {
+            const values = JSON.parse(cookieValue);
+            const valueIndex = values.findIndex(item => item.url === window.location.href);
+
+            if (valueIndex > -1) {
+                return values[valueIndex].tags;
+            }
+        }
+
+        return null;
+    }
+
+    setRateValue(value) {
+        const cookieValue = this.cookie.value;
+        const values = cookieValue ? JSON.parse(this.cookie.value) : {};
+        const valueIndex = values.findIndex(item => item.url === window.location.href);
+
+        if (valueIndex > -1) {
+            values[valueIndex]['rating'] = value;
+            this.cookie.set(JSON.stringify(values), { expires: 1 });
+        }
     };
 
-    setTagsCookie(value) {
-        this.tagsCookie.set(value, { expires: 1 });
+    setTagsValue(value) {
+        const values = JSON.parse(this.cookie.value);
+        const valueIndex = values.findIndex(item => item.url === window.location.href);
+
+        if (valueIndex > -1) {
+            values[valueIndex]['tags'] = value;
+        }
     };
 
     // Push rating to backend via graphql
@@ -76,7 +163,7 @@ export default class AppStore {
         this.loading = true;
         this.result = {};
 
-        const response = await this.httpStore.apolloClient
+        const response = await this.apolloClient
             .mutate({
                 mutation: RatingMutation,
                 variables: {
@@ -95,8 +182,8 @@ export default class AppStore {
             });
 
         if (response && response.data && response.data.ratingMutation) {
-            this.setRateCookie(values.rating);
-            this.setTagsCookie(values.tags);
+            this.setRateValue(values.rating);
+            this.setTagsValue(values.tags);
             this.submitted = true;
             this.loading = false;
         }
