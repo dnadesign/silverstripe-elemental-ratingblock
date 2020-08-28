@@ -7,7 +7,8 @@ import { inject, observer } from 'mobx-react';
 import AppForm from './app.form';
 import { RateComponent } from 'silverstripe-react-ratingblock';
 
-import './rating.scss';
+// import './rating.scss';
+import 'silverstripe-react-ratingblock/dist/main.css';
 
 @inject('appStore')
 @observer
@@ -31,7 +32,7 @@ class AppComponent extends Component {
             this.enableRatingComments = window.bootData.EnableRatingComments;
             this.intro = window.bootData.RatingFormIntro;
             this.title = window.bootData.RatingFormTitle;
-            this.stars = window.bootData.RatingStars || { 'Max': 5 };
+            this.stars = window.bootData.RatingStars ? (window.bootData.RatingStars.Max === 0 ? { 'Max': 5 } : window.bootData.RatingStars) : { 'Max': 5 }
 
             // set the page ID and carry through the form
             if (this.pageID) {

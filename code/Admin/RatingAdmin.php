@@ -18,6 +18,8 @@ class RatingAdmin extends ModelAdmin
 
     private static $url_segment = 'ratings';
 
+    private static $menu_icon_class = 'font-icon-menu-reports';
+
     public function getEditForm($id = null, $fields = null)
     {
         $form = parent::getEditForm($id, $fields);

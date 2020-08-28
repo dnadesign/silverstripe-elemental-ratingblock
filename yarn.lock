@@ -10754,8 +10754,8 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
 "silverstripe-react-ratingblock@git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git":
-  version "1.0.1"
-  resolved "git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git#de1bf986896f7f8e325b3bf33441e7a9a263395a"
+  version "1.0.2"
+  resolved "git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git#be52cae1cf81489fd0fa944b178625d00e54cca8"
 
 simple-html-tokenizer@^0.1.1:
   version "0.1.1"

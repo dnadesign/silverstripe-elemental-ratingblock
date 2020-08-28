@@ -57,8 +57,6 @@ export default class RatingStore {
         });
 
         this.apolloClient = this.setApolloClient();
-
-        this.setCookiePage();
     }
 
     getApiUri() {
@@ -182,6 +180,7 @@ export default class RatingStore {
             });
 
         if (response && response.data && response.data.ratingMutation) {
+            this.setCookiePage();
             this.setRateValue(values.rating);
             this.setTagsValue(values.tags);
             this.submitted = true;

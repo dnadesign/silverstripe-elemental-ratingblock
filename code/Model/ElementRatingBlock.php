@@ -34,7 +34,7 @@ class ElementRatingBlock extends BaseElement
 
     private static $controller_class = RatingBlockController::class;
 
-    private static $icon = 'font-icon-thumbnails';
+    private static $icon = 'font-icon-check-mark-2';
 
     private static $db = [
         'EnableRatingForm' => DBBoolean::class,
@@ -108,21 +108,24 @@ class ElementRatingBlock extends BaseElement
         parent::onBeforeWrite();
 
         if ($this->Stars()->Count() == 0) {
-            foreach ($this->config()->stars as $starIndex => $star) {
-                $ratingStar = new RatingStar();
-                $ratingStar->Name = $starIndex;
-                $ratingStar->write();
+            $config = $this->config();
+            if ($config && $config->stars) {
+                foreach ($config->stars as $starIndex => $star) {
+                    $ratingStar = new RatingStar();
+                    $ratingStar->Name = $starIndex;
+                    $ratingStar->write();
 
-                if ($ratingStar->Tags()->Count() == 0) {
-                    foreach ($star['tags'] as $tag) {
-                        $ratingTag = new RatingTag();
-                        $ratingTag->Name = $tag;
-                        $ratingTag->write();
-                        $ratingStar->Tags()->add($ratingTag);
+                    if ($ratingStar->Tags()->Count() == 0) {
+                        foreach ($star['tags'] as $tag) {
+                            $ratingTag = new RatingTag();
+                            $ratingTag->Name = $tag;
+                            $ratingTag->write();
+                            $ratingStar->Tags()->add($ratingTag);
+                        }
                     }
-                }
 
-                $this->Stars()->add($ratingStar);
+                    $this->Stars()->add($ratingStar);
+                }
             }
         }
     }
