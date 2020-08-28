@@ -10755,7 +10755,7 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
 
 "silverstripe-react-ratingblock@git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git":
   version "1.0.2"
-  resolved "git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git#be52cae1cf81489fd0fa944b178625d00e54cca8"
+  resolved "git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git#21dbf4fcee2f68aeb2cc1a7e15558cc6b9a02d04"
 
 simple-html-tokenizer@^0.1.1:
   version "0.1.1"
