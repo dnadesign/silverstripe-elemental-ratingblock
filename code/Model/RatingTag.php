@@ -58,7 +58,7 @@ class RatingTag extends DataObject
                 'Please enter a name for the tag',
                 ValidationResult::TYPE_ERROR
             );
-        } else if (RatingTag::get()->filter(['Name' => $this->Name])->first()) {
+        } else if ($this->Star()->Tags()->filter(['Name' => $this->Name])->first()) {
             $result->addError(
                 'The ' . $this->Name . ' tag already exists',
                 ValidationResult::TYPE_ERROR

@@ -106,25 +106,28 @@ class ElementRatingBlock extends BaseElement
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
+        if (!$this->isInDB()) {
+            if ($this->Stars()->Count() == 0) {
+                $config = $this->config();
+                $stars = $config ? $config->get('stars') : null;
+                if ($stars) {
+                    foreach ($stars as $starIndex => $star) {
+                        $ratingStar = new RatingStar();
+                        $ratingStar->Name = $starIndex;
+                        $ratingStar->write();
 
-        if ($this->Stars()->Count() == 0) {
-            $config = $this->config();
-            if ($config && $config->stars) {
-                foreach ($config->stars as $starIndex => $star) {
-                    $ratingStar = new RatingStar();
-                    $ratingStar->Name = $starIndex;
-                    $ratingStar->write();
-
-                    if ($ratingStar->Tags()->Count() == 0) {
-                        foreach ($star['tags'] as $tag) {
-                            $ratingTag = new RatingTag();
-                            $ratingTag->Name = $tag;
-                            $ratingTag->write();
-                            $ratingStar->Tags()->add($ratingTag);
+                        if ($ratingStar->Tags()->Count() == 0) {
+                            foreach ($star['tags'] as $index => $tag) {
+                                $ratingTag = new RatingTag();
+                                $ratingTag->Name = $tag;
+                                $ratingTag->SortOrder = $index;
+                                $ratingTag->write();
+                                $ratingStar->Tags()->add($ratingTag);
+                            }
                         }
-                    }
 
-                    $this->Stars()->add($ratingStar);
+                        $this->Stars()->add($ratingStar);
+                    }
                 }
             }
         }

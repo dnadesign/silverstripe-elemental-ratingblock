@@ -5,6 +5,9 @@ namespace DNADesign\Elemental\Admins;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use DNADesign\Elemental\Models\ElementRatingBlock;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldImportButton;
+use SilverStripe\Forms\GridField\GridFieldPrintButton;
 
 class RatingBlockAdmin extends ModelAdmin
 {
@@ -26,6 +29,9 @@ class RatingBlockAdmin extends ModelAdmin
         $config = $field->getConfig();
 
         $config->removeComponentsByType(GridFieldArchiveAction::class);
+        $config->removeComponentsByType(GridFieldExportButton::class);
+        $config->removeComponentsByType(GridFieldPrintButton::class);
+        $config->removeComponentsByType(GridFieldImportButton::class);
 
         return $form;
     }

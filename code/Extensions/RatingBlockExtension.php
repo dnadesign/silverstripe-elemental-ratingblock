@@ -10,7 +10,10 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
 use SilverStripe\Forms\GridField\GridFieldFilterHeader;
+use SilverStripe\Forms\GridField\GridFieldImportButton;
+use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 
@@ -37,6 +40,10 @@ class RatingBlockExtension extends DataExtension
         $config->removeComponentsByType(GridFieldAddNewButton::class);
         $config->removeComponentsByType(GridFieldArchiveAction::class);
         $config->removeComponentsByType(GridFieldFilterHeader::class);
+        $config->removeComponentsByType(GridFieldExportButton::class);
+        $config->removeComponentsByType(GridFieldPrintButton::class);
+        $config->removeComponentsByType(GridFieldImportButton::class);
+
         $config->getComponentByType(GridFieldAddExistingAutocompleter::class)->setSearchFields(
             [
                 'Title',
