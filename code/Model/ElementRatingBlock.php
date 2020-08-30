@@ -4,6 +4,7 @@ namespace DNADesign\Elemental\Models;
 
 use DNADesign\Elemental\Controllers\RatingBlockController;
 use DNADesign\Elemental\Models\BaseElement;
+use Page;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\FieldType\DBBoolean;
@@ -44,6 +45,10 @@ class ElementRatingBlock extends BaseElement
         'RatingFormIntro' => DBHTMLText::class,
         'EnableRatingComments' => DBBoolean::class,
         'RatingFormSuccessMessage' => DBHTMLText::class
+    ];
+
+    private static $belongs_many_many = [
+        'Pages' => Page::class
     ];
 
     private static $many_many = [
