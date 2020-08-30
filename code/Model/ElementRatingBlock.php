@@ -47,10 +47,6 @@ class ElementRatingBlock extends BaseElement
         'RatingFormSuccessMessage' => DBHTMLText::class
     ];
 
-    private static $belongs_many_many = [
-        'Pages' => Page::class
-    ];
-
     private static $many_many = [
         'Stars' => RatingStar::class
     ];
