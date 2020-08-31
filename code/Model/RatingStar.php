@@ -20,6 +20,10 @@ class RatingStar extends DataObject
         'SortOrder' => 'Int'
     ];
 
+    private static $has_one = [
+        'RatingBlock' => ElementRatingBlock::class
+    ];
+
     private static $has_many = [
         'Tags' => RatingTag::class
     ];
@@ -65,7 +69,7 @@ class RatingStar extends DataObject
     protected function onBeforeWrite()
     {
         if (!$this->SortOrder) {
-            $this->SortOrder = RatingStar::get()->max('SortOrder') + 1;
+            $this->SortOrder = RatingStar::get()->filter(['RatingBlockID' => $this->RatingBlock()->ID])->max('SortOrder') + 1;
         }
 
         parent::onBeforeWrite();

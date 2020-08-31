@@ -44,21 +44,17 @@ class ElementRatingBlock extends BaseElement
         'RatingFormTitle' => 'Varchar(100)',
         'RatingFormIntro' => DBHTMLText::class,
         'EnableRatingComments' => DBBoolean::class,
-        'RatingFormSuccessMessage' => DBHTMLText::class
+        'RatingFormSuccessMessage' => DBHTMLText::class,
+        'UseDefaultTags' => DBBoolean::class
     ];
 
-    private static $many_many = [
+    private static $has_many = [
         'Stars' => RatingStar::class
     ];
 
     private static $defaults = [
-        'EnableRatingTags' => true
-    ];
-
-    private static $many_many_extrafields = [
-        'Stars' => [
-            'SortOrder' => 'Int'
-        ]
+        'EnableRatingTags' => true,
+        'UseDefaultTags' => true
     ];
 
     /**
@@ -86,6 +82,16 @@ class ElementRatingBlock extends BaseElement
             ]
         );
 
+        $config = $this->config();
+        $starsConfig = $config ? $config->get('stars') : null;
+
+        if ($starsConfig && !$this->isInDB()) {
+            $fields->insertAfter(
+                'EnableRatingTags',
+                CheckboxField::create('UseDefaultTags', 'Enable use default tags')
+            );
+        }
+
         $stars = $fields->dataFieldByName('Stars');
 
         if ($stars) {
@@ -104,24 +110,28 @@ class ElementRatingBlock extends BaseElement
         return $fields;
     }
 
-    public function onBeforeWrite()
+    public function onAfterWrite()
     {
-        parent::onBeforeWrite();
-        if (!$this->isInDB()) {
+        parent::onAfterWrite();
+        if ($this->UseDefaultTags) {
             if ($this->Stars()->Count() == 0) {
                 $config = $this->config();
                 $stars = $config ? $config->get('stars') : null;
                 if ($stars) {
+                    $sort = 0;
                     foreach ($stars as $starIndex => $star) {
                         $ratingStar = new RatingStar();
+                        $sort += 1;
                         $ratingStar->Name = $starIndex;
+                        $ratingStar->SortOrder = $sort;
                         $ratingStar->write();
-
+                        $sortTag = 0;
                         if ($ratingStar->Tags()->Count() == 0) {
                             foreach ($star['tags'] as $index => $tag) {
                                 $ratingTag = new RatingTag();
+                                $sortTag += 1;
                                 $ratingTag->Name = $tag;
-                                $ratingTag->SortOrder = $index;
+                                $ratingTag->SortOrder = $sortTag;
                                 $ratingTag->write();
                                 $ratingStar->Tags()->add($ratingTag);
                             }
