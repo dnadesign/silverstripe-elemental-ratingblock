@@ -82,6 +82,7 @@ class ElementRatingBlock extends BaseElement
             ]
         );
 
+        $fields->removeByName(['UseDefaultTags']);
         $config = $this->config();
         $starsConfig = $config ? $config->get('stars') : null;
 
