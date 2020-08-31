@@ -10,6 +10,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use SilverStripe\Forms\ReadonlyField;
 
 class RatingStar extends DataObject
 {
@@ -43,6 +44,9 @@ class RatingStar extends DataObject
     {
         $fields = parent::getCMSFields();
 
+        $fields->removeByName('RatingBlockID');
+        $fields->removeByName('SortOrder');
+
         $name = $fields->dataFieldByName('Name');
         if ($name) {
             $name->setDescription('This name will be displayed when hovering/selecting star');
@@ -62,6 +66,8 @@ class RatingStar extends DataObject
             $config->addComponent($injector->create(GridFieldDeleteAction::class));
             $config->addComponent(new GridFieldOrderableRows('SortOrder'));
         }
+
+        $fields->addFieldToTab('Root.Main', ReadonlyField::create('SortOrder'));
 
         return $fields;
     }
