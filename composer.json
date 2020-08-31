@@ -16,8 +16,7 @@
     },
     "extra": {
         "expose": [
-            "client/dist",
-            "client/lang"
+            "client/dist"
         ]
     },
     "scripts": {
