@@ -72157,9 +72157,9 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
     value: function setCookiePage() {
       var cookieValue = this.cookie.value;
 
-      if (cookieValue && cookieValue !== "undefined") {
-        var values = JSON.parse(cookieValue);
-        var valueIndex = values.findIndex(function (item) {
+      if (cookieValue && cookieValue !== 'undefined') {
+        var values = JSON.parse(cookieValue),
+            valueIndex = values.findIndex(function (item) {
           return item.url === window.location.href;
         });
 
@@ -72192,8 +72192,8 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
       var cookieValue = this.cookie.value;
 
       if (cookieValue) {
-        var values = JSON.parse(cookieValue);
-        var valueIndex = values.findIndex(function (item) {
+        var values = JSON.parse(cookieValue),
+            valueIndex = values.findIndex(function (item) {
           return item.url === window.location.href;
         });
 
@@ -72210,8 +72210,8 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
       var cookieValue = this.cookie.value;
 
       if (cookieValue) {
-        var values = JSON.parse(cookieValue);
-        var valueIndex = values.findIndex(function (item) {
+        var values = JSON.parse(cookieValue),
+            valueIndex = values.findIndex(function (item) {
           return item.url === window.location.href;
         });
 
@@ -72225,9 +72225,9 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
   }, {
     key: "setRateValue",
     value: function setRateValue(value) {
-      var cookieValue = this.cookie.value;
-      var values = cookieValue ? JSON.parse(this.cookie.value) : {};
-      var valueIndex = values.findIndex(function (item) {
+      var cookieValue = this.cookie.value,
+          values = cookieValue ? JSON.parse(this.cookie.value) : {},
+          valueIndex = values.findIndex(function (item) {
         return item.url === window.location.href;
       });
 
@@ -72241,8 +72241,8 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
   }, {
     key: "setTagsValue",
     value: function setTagsValue(value) {
-      var values = JSON.parse(this.cookie.value);
-      var valueIndex = values.findIndex(function (item) {
+      var values = JSON.parse(this.cookie.value),
+          valueIndex = values.findIndex(function (item) {
         return item.url === window.location.href;
       });
 

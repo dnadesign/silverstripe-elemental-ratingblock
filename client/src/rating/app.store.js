@@ -90,9 +90,9 @@ export default class RatingStore {
 
     setCookiePage() {
         const cookieValue = this.cookie.value;
-        if (cookieValue && cookieValue !== "undefined") {
-            let values = JSON.parse(cookieValue);
-            const valueIndex = values.findIndex(item => item.url === window.location.href);
+        if (cookieValue && cookieValue !== 'undefined') {
+            const values = JSON.parse(cookieValue),
+                valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex === -1) {
                 values.push({ url: window.location.href });
@@ -112,8 +112,8 @@ export default class RatingStore {
     getRateValue() {
         const cookieValue = this.cookie.value;
         if (cookieValue) {
-            const values = JSON.parse(cookieValue);
-            const valueIndex = values.findIndex(item => item.url === window.location.href);
+            const values = JSON.parse(cookieValue),
+                valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex > -1) {
                 return values[valueIndex].rating;
@@ -122,11 +122,12 @@ export default class RatingStore {
 
         return null;
     }
+
     getTagsValue() {
         const cookieValue = this.cookie.value;
         if (cookieValue) {
-            const values = JSON.parse(cookieValue);
-            const valueIndex = values.findIndex(item => item.url === window.location.href);
+            const values = JSON.parse(cookieValue),
+                valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex > -1) {
                 return values[valueIndex].tags;
@@ -137,9 +138,9 @@ export default class RatingStore {
     }
 
     setRateValue(value) {
-        const cookieValue = this.cookie.value;
-        const values = cookieValue ? JSON.parse(this.cookie.value) : {};
-        const valueIndex = values.findIndex(item => item.url === window.location.href);
+        const cookieValue = this.cookie.value,
+            values = cookieValue ? JSON.parse(this.cookie.value) : {},
+            valueIndex = values.findIndex(item => item.url === window.location.href);
 
         if (valueIndex > -1) {
             values[valueIndex]['rating'] = value;
@@ -148,8 +149,8 @@ export default class RatingStore {
     };
 
     setTagsValue(value) {
-        const values = JSON.parse(this.cookie.value);
-        const valueIndex = values.findIndex(item => item.url === window.location.href);
+        const values = JSON.parse(this.cookie.value),
+            valueIndex = values.findIndex(item => item.url === window.location.href);
 
         if (valueIndex > -1) {
             values[valueIndex]['tags'] = value;
