@@ -32,7 +32,7 @@
         "mobx-react-form": "2.0.8",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "silverstripe-react-ratingblock": "^1.0.3",
+        "silverstripe-react-ratingblock": "^1.0.4",
         "svg-inline-loader": "^0.8.2",
         "validatorjs": "^3.18.1"
     },

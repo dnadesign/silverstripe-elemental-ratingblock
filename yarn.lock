@@ -10753,9 +10753,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-"silverstripe-react-ratingblock@git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git":
-  version "1.0.2"
-  resolved "git+ssh://git@github.com:dnadesign/silverstripe-react-ratingblock.git#21dbf4fcee2f68aeb2cc1a7e15558cc6b9a02d04"
+silverstripe-react-ratingblock@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/silverstripe-react-ratingblock/-/silverstripe-react-ratingblock-1.0.4.tgz#a8bf2b2649d79facc59b32b7457f8be69a5b41eb"
+  integrity sha512-xMlWCG6SMIxJyMd/YTD6493ukgYjX6Sc8WKB3gZhhUtFy7JHU6knvIKGTGvAeVpGILNP1gGXMQMaNlFHrwr0Ew==
 
 simple-html-tokenizer@^0.1.1:
   version "0.1.1"
