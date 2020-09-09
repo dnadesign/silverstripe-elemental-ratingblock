@@ -40,7 +40,6 @@ class ElementRatingBlock extends BaseElement
     private static $db = [
         'EnableRatingForm' => DBBoolean::class,
         'EnableRatingTags' => DBBoolean::class,
-        'RatingPageName' => 'Varchar(50)',
         'RatingFormTitle' => 'Varchar(100)',
         'RatingFormIntro' => DBHTMLText::class,
         'EnableRatingComments' => DBBoolean::class,
@@ -69,8 +68,6 @@ class ElementRatingBlock extends BaseElement
             [
                 CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page'),
                 CheckboxField::create('EnableRatingTags', 'Enable Rating form tags'),
-                TextField::create('RatingPageName', 'Page name to appear for rating')
-                    ->setDescription('For fallback reference when using rating block in elemental area. One word, no spaces'),
                 TextField::create('RatingFormTitle', 'Rating form title'),
                 HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
                     ->setEditorConfig('help')
@@ -146,20 +143,6 @@ class ElementRatingBlock extends BaseElement
     }
 
     /**
-     * provide a fallback in case the PageName is not entered into the CMS
-     * This provides us with a means of storing a page reference if
-     * the linked page evcer gets deleted or it's name changes
-     */
-    public function getActualRatingPageName()
-    {
-        if ($this->owner->RatingPageName) {
-            return $this->owner->RatingPageName;
-        }
-
-        return $this->owner->dbObject('ClassName')->getShortName();
-    }
-
-    /**
      * Update bootData to inject rating content into the app
      */
     public function getBootData()
@@ -171,8 +154,8 @@ class ElementRatingBlock extends BaseElement
         $bootData['RatingFormIntro'] = (string) $this->owner->dbObject('RatingFormIntro');
         $bootData['EnableRatingComments'] = $this->owner->EnableRatingComments;
         $bootData['RatingFormSuccessMessage'] = (string) $this->owner->dbObject('RatingFormSuccessMessage');
-        $bootData['RatingPageName'] = $this->owner->getActualRatingPageName();
-        $bootData['RatingPageID'] = $this->owner->ID;
+        $bootData['RatingPageName'] = $this->getPage()->Title;
+        $bootData['RatingPageID'] = $this->getPage()->ID;
         $bootData['RatingStars'] = $this->getStars();
 
         return json_encode($bootData, JSON_UNESCAPED_UNICODE);

@@ -23,10 +23,6 @@ class RatingBlockExtension extends DataExtension
         'RatingBlock' => ElementRatingBlock::class
     ];
 
-    // private static $cascade_deletes = [
-    //     ElementRatingBlock::class
-    // ];
-
     /**
      * Update the fields of the page to include Rating specific fields
      */
