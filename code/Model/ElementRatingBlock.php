@@ -70,7 +70,7 @@ class ElementRatingBlock extends BaseElement
                 CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page'),
                 CheckboxField::create('EnableRatingTags', 'Enable Rating form tags'),
                 TextField::create('RatingPageName', 'Page name to appear for rating')
-                    ->setDescription('For fallback reference. One word, no spaces'),
+                    ->setDescription('For fallback reference when using rating block in elemental area. One word, no spaces'),
                 TextField::create('RatingFormTitle', 'Rating form title'),
                 HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
                     ->setEditorConfig('help')

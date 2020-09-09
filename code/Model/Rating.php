@@ -27,7 +27,7 @@ class Rating extends DataObject implements PermissionProvider
     private static $summary_fields = [
         'ID' => 'ID',
         'Rating' => 'Rating',
-        'PageName' => 'Page name',
+        'getPageType' => 'Page type',
         'Page.Title' => 'Rated Page',
         'getAverage' => 'Page Average',
         'getTotalRatings' => 'Page Ratings count',
@@ -48,6 +48,13 @@ class Rating extends DataObject implements PermissionProvider
     {
         if ($this->PageID) {
             return round(Rating::get()->filter('PageID', $this->PageID)->avg('Rating'), 2);
+        }
+    }
+
+    public function getPageType()
+    {
+        if ($this->PageID) {
+            return $this->Page()->dbObject('ClassName')->ShortName;
         }
     }
 

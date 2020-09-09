@@ -81,8 +81,8 @@ class RatingBlockExtension extends DataExtension
             $bootData['RatingFormIntro'] = (string) $block->dbObject('RatingFormIntro');
             $bootData['EnableRatingComments'] = $block->EnableRatingComments;
             $bootData['RatingFormSuccessMessage'] = (string) $block->dbObject('RatingFormSuccessMessage');
-            $bootData['RatingPageName'] = $block->getActualRatingPageName();
-            $bootData['RatingPageID'] = $block->ID;
+            $bootData['RatingPageName'] = $this->owner->Title;
+            $bootData['RatingPageID'] = $this->owner->ID;
             $bootData['RatingStars'] = $block->getStars();
         }
     }
