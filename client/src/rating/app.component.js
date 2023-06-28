@@ -92,7 +92,7 @@ class AppComponent extends Component {
     }
 
     setCommentsValue(value) {
-        this.ratingForm.set({ comments: value });
+        this.ratingForm.set({ comments: value ?? '' });
     }
 
     setTagsValue(value) {

@@ -44798,9 +44798,10 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
           _this$props = this.props,
           errors = _this$props.errors,
           stars = _this$props.stars;
-      return this.props.form.comments.enabled && /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+      return this.props.form.comments.enabled ? /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         className: "rating__comments-outer"
       }, stars && (!stars.Tags || stars.Tags.length === 0) && /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("button", {
+        ref: "ratingCommentButton",
         className: "rating__comments-toggle",
         onClick: function onClick(e) {
           return _this2.setExpand(e, true);
@@ -44820,6 +44821,7 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
         className: "sr-only",
         htmlFor: this.props.CommentsID
       }, "Additional comments"), /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("textarea", {
+        ref: "ratingCommentInput",
         rows: 5,
         readOnly: submitted,
         disabled: disabled || submitted || !this.state.expanded,
@@ -44836,7 +44838,7 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
         "aria-hidden": !this.state.expanded
       }), errors['comments'] && /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("p", {
         className: "rating__error"
-      }, errors['comments']))));
+      }, errors['comments'])))) : null;
     }
     /**
      * Render stars
@@ -44857,6 +44859,7 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
       return stars && stars.Max > 0 && /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         className: "rating__stars"
       }, /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(lab_["Rating"], {
+        ref: "ratingStars",
         name: "rating-".concat(this.props.name),
         emptyIcon: /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(star, {
           stroke: "#fff"
@@ -44934,7 +44937,8 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
           form = _this$props3.form,
           tagList = form.tags && form.tags.split(',');
       return this.state.value > 0 && stars && stars.Tags && stars.Tags.length > 0 && /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: "rating__tags"
+        className: "rating__tags",
+        ref: "ratingTags"
       }, Object.values(stars.Tags[this.state.value - 1]).map(function (tag) {
         var checked = tagList.includes(tag);
         return /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(components_tag_tag, {
@@ -44971,6 +44975,7 @@ var rate_component_RateComponent = /*#__PURE__*/function (_Component) {
         name: "pageID",
         value: this.page.id
       }), /*#__PURE__*/external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("button", {
+        ref: "ratingSubmit",
         id: "rating_submit",
         type: "submit",
         className: "button button--primary button--small button--cta button--rating rating__action",
@@ -72586,7 +72591,9 @@ var main = __webpack_require__(614);
 
 
 
-var _dec, app_component_class;
+var _dec,
+    app_component_class,
+    _jsxFileName = "/Users/jack.allan/Sites/silverstripe-elemental-ratingblock/client/src/rating/app.component.js";
 
 /* eslint-disable no-unreachable */
 
@@ -72703,7 +72710,7 @@ var app_component_AppComponent = (_dec = inject('appStore'), _dec(app_component_
     key: "setCommentsValue",
     value: function setCommentsValue(value) {
       this.ratingForm.set({
-        comments: value
+        comments: value !== null && value !== void 0 ? value : ''
       });
     }
   }, {
@@ -72753,7 +72760,13 @@ var app_component_AppComponent = (_dec = inject('appStore'), _dec(app_component_
       },
           rating = this.ratingForm.$('rating').value || 0;
       return /*#__PURE__*/react_default.a.createElement("div", {
-        className: "rating__wrapper"
+        className: "rating__wrapper",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 134,
+          columnNumber: 16
+        }
       }, /*#__PURE__*/react_default.a.createElement(dist["RateComponent"], {
         name: "Rating block",
         errors: this.ratingForm.errors(),
@@ -72769,7 +72782,13 @@ var app_component_AppComponent = (_dec = inject('appStore'), _dec(app_component_
         form: form,
         page: page,
         previouslyRated: this.state.previouslyRated,
-        enabled: true
+        enabled: true,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 135,
+          columnNumber: 13
+        }
       }));
     }
   }]);
@@ -72783,7 +72802,9 @@ var app_component_AppComponent = (_dec = inject('appStore'), _dec(app_component_
 
 
 
-var app_dec, app_class;
+var app_dec,
+    app_class,
+    app_jsxFileName = "/Users/jack.allan/Sites/silverstripe-elemental-ratingblock/client/src/rating/app.js";
 
 /* eslint-disable no-unreachable */
 
@@ -72814,10 +72835,36 @@ var app_App = (app_dec = inject('appStore'), app_dec(app_class = mobxreact_esm_o
           appStore = _this$props.appStore,
           className = _this$props.className;
       return /*#__PURE__*/react_default.a.createElement("div", {
-        className: className
+        className: className,
+        __self: this,
+        __source: {
+          fileName: app_jsxFileName,
+          lineNumber: 15,
+          columnNumber: 13
+        }
       }, /*#__PURE__*/react_default.a.createElement(Provider, {
-        appStore: appStore
-      }, /*#__PURE__*/react_default.a.createElement("div", null, /*#__PURE__*/react_default.a.createElement(app_component, null))), children);
+        appStore: appStore,
+        __self: this,
+        __source: {
+          fileName: app_jsxFileName,
+          lineNumber: 16,
+          columnNumber: 17
+        }
+      }, /*#__PURE__*/react_default.a.createElement("div", {
+        __self: this,
+        __source: {
+          fileName: app_jsxFileName,
+          lineNumber: 17,
+          columnNumber: 21
+        }
+      }, /*#__PURE__*/react_default.a.createElement(app_component, {
+        __self: this,
+        __source: {
+          fileName: app_jsxFileName,
+          lineNumber: 18,
+          columnNumber: 25
+        }
+      }))), children);
     }
   }]);
 
@@ -73003,6 +73050,8 @@ var http_store_HTTPStore = (http_store_class = (http_store_temp = /*#__PURE__*/f
   }
 }), _applyDecoratedDescriptor(http_store_class.prototype, "clearError", [mobx_module["action"]], Object.getOwnPropertyDescriptor(http_store_class.prototype, "clearError"), http_store_class.prototype), _applyDecoratedDescriptor(http_store_class.prototype, "setToken", [mobx_module["action"]], Object.getOwnPropertyDescriptor(http_store_class.prototype, "setToken"), http_store_class.prototype), _applyDecoratedDescriptor(http_store_class.prototype, "headers", [mobx_module["computed"]], Object.getOwnPropertyDescriptor(http_store_class.prototype, "headers"), http_store_class.prototype)), http_store_class);
 // CONCATENATED MODULE: ./client/src/index.js
+var src_jsxFileName = "/Users/jack.allan/Sites/silverstripe-elemental-ratingblock/client/src/index.js";
+
 /*
  * App + this file is an example setup and not required by the final application.
  * Login, and the shared folder are the core of this library
@@ -73024,8 +73073,21 @@ var pageName = window.bootData && window.bootData.RatingPageName ? window.bootDa
   httpStore: httpStore,
   appStore: src_appStore
 };
-react_dom_default.a.render( /*#__PURE__*/react_default.a.createElement(Provider, rootStores, /*#__PURE__*/react_default.a.createElement(app, {
-  className: "rating-app"
+react_dom_default.a.render( /*#__PURE__*/react_default.a.createElement(Provider, Object.assign({}, rootStores, {
+  __self: undefined,
+  __source: {
+    fileName: src_jsxFileName,
+    lineNumber: 26,
+    columnNumber: 5
+  }
+}), /*#__PURE__*/react_default.a.createElement(app, {
+  className: "rating-app",
+  __self: undefined,
+  __source: {
+    fileName: src_jsxFileName,
+    lineNumber: 27,
+    columnNumber: 9
+  }
 })), document.querySelector('[data-ratingblock]'));
 
 if (false) {}
