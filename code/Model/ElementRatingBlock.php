@@ -61,23 +61,28 @@ class ElementRatingBlock extends BaseElement
      */
     public function getCMSFields()
     {
-        $fields = parent::getCMSFields();
+        $this->beforeUpdateCMSFields(function (FieldList $fields) {
 
-        $fields->addFieldsToTab(
-            'Root.Main',
-            [
-                CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page'),
-                CheckboxField::create('EnableRatingTags', 'Enable Rating form tags'),
-                TextField::create('RatingFormTitle', 'Rating form title'),
-                HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
-                    ->setEditorConfig('help')
-                    ->setRows(3),
-                CheckboxField::create('EnableRatingComments', 'Enable Rating comments'),
-                HTMLEditorField::create('RatingFormSuccessMessage', 'Rating form sucess message')
-                    ->setEditorConfig('help')
-                    ->setRows(3)
-            ]
-        );
+            $fields->addFieldsToTab(
+                'Root.Main',
+                [
+                    CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page'),
+                    CheckboxField::create('EnableRatingTags', 'Enable Rating form tags'),
+                    TextField::create('RatingFormTitle', 'Rating form title'),
+                    HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
+                        ->setEditorConfig('help')
+                        ->setRows(33),
+                    CheckboxField::create('EnableRatingComments', 'Enable Rating comments'),
+                    HTMLEditorField::create('RatingFormSuccessMessage', 'Rating form sucess message')
+                        ->setEditorConfig('help')
+                        ->setRows(3)
+                ]
+            );
+
+            $fields->removeByName(['UseDefaultTags']);
+        });
+        
+        $fields = parent::getCMSFields();
 
         $fields->removeByName(['UseDefaultTags']);
         $config = $this->config();
