@@ -24,15 +24,15 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  */
 class ElementRatingBlock extends BaseElement
 {
-    private static $title = "Rating block";
+    private static $title = "Rating";
 
     private static $description = "Custom rating block";
 
     private static $table_name = 'ElementRatingBlock';
 
-    private static $singular_name = 'Rating block';
+    private static $singular_name = 'Rating';
 
-    private static $plural_name = 'Rating blocks';
+    private static $plural_name = 'Ratings';
 
     private static $controller_class = RatingBlockController::class;
 
