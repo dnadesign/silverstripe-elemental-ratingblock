@@ -212,7 +212,7 @@ class ElementRatingBlock extends BaseElement
 
     public function getType()
     {
-        return _t(__class__ . '.BlockType', 'Rating block');
+        return _t(__class__ . '.BlockType', 'Rating');
     }
 
     public function inlineEditable()
