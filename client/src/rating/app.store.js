@@ -43,19 +43,13 @@ export default class RatingStore {
 
     static getInstance(props) {
         return (
-            RatingStore.instance || (RatingStore.instance = new RatingStore(props))
+          RatingStore.instance || (RatingStore.instance = new RatingStore(props))
         );
     }
 
     constructor(props) {
         this.httpStore = props.httpStore;
         this.pageName = props.pageName;
-
-        this.httpLink = new HttpLink({
-            uri: this.getApiUri(),
-            credentials: 'same-origin'
-        });
-
         this.apolloClient = this.setApolloClient();
     }
 
@@ -63,18 +57,23 @@ export default class RatingStore {
         const location = window.location.host;
 
         if (
-            window.location.hostname === 'localhost' ||
-            window.location.hostname === '10.0.2.2'
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '10.0.2.2'
         ) {
-            return '//mbie9.test/ratingblockgraphql/';
+            return '//mbie9.test/graphql/';
         }
 
-        return `//${location}/ratingblockgraphql/`;
+        return `//${location}/graphql/`;
     }
 
     setApolloClient() {
+        const httpLink = new HttpLink({
+            uri: this.getApiUri(),
+            credentials: 'same-origin'
+        });
+
         return new ApolloClient({
-            link: this.httpStore.authLink.concat(this.httpLink),
+            link: httpLink, // Directly use httpLink without concat
             cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
         });
     }
@@ -92,7 +91,7 @@ export default class RatingStore {
         const cookieValue = this.cookie.value;
         if (cookieValue && cookieValue !== 'undefined') {
             const values = JSON.parse(cookieValue),
-                valueIndex = values.findIndex(item => item.url === window.location.href);
+              valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex === -1) {
                 values.push({ url: window.location.href });
@@ -113,7 +112,7 @@ export default class RatingStore {
         const cookieValue = this.cookie.value;
         if (cookieValue) {
             const values = JSON.parse(cookieValue),
-                valueIndex = values.findIndex(item => item.url === window.location.href);
+              valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex > -1) {
                 return values[valueIndex].rating;
@@ -127,7 +126,7 @@ export default class RatingStore {
         const cookieValue = this.cookie.value;
         if (cookieValue) {
             const values = JSON.parse(cookieValue),
-                valueIndex = values.findIndex(item => item.url === window.location.href);
+              valueIndex = values.findIndex(item => item.url === window.location.href);
 
             if (valueIndex > -1) {
                 return values[valueIndex].tags;
@@ -139,8 +138,8 @@ export default class RatingStore {
 
     setRateValue(value) {
         const cookieValue = this.cookie.value,
-            values = cookieValue ? JSON.parse(this.cookie.value) : {},
-            valueIndex = values.findIndex(item => item.url === window.location.href);
+          values = cookieValue ? JSON.parse(this.cookie.value) : {},
+          valueIndex = values.findIndex(item => item.url === window.location.href);
 
         if (valueIndex > -1) {
             values[valueIndex]['rating'] = value;
@@ -150,7 +149,7 @@ export default class RatingStore {
 
     setTagsValue(value) {
         const values = JSON.parse(this.cookie.value),
-            valueIndex = values.findIndex(item => item.url === window.location.href);
+          valueIndex = values.findIndex(item => item.url === window.location.href);
 
         if (valueIndex > -1) {
             values[valueIndex]['tags'] = value;
@@ -161,24 +160,31 @@ export default class RatingStore {
     async rate(values) {
         this.loading = true;
         this.result = {};
+        this.secToken = window.bootData.SecurityToken;
 
         const response = await this.apolloClient
-            .mutate({
-                mutation: RatingMutation,
-                variables: {
-                    Rating: values.rating,
-                    Comments: values.comments,
-                    Tags: values.tags,
-                    PageName: values.pageName,
-                    URL: window.location.toString(),
-                    PageID: values.pageID
-                },
-                fetchPolicy: 'no-cache'
-            })
-            .catch(response => {
-                const errors = response.graphQLErrors.map(error => error.message);
-                this.error = errors.join(', ');
-            });
+        .mutate({
+            mutation: RatingMutation,
+            variables: {
+                Rating: values.rating,
+                Comments: values.comments,
+                Tags: values.tags,
+                PageName: values.pageName,
+                URL: window.location.toString(),
+                PageID: values.pageID,
+                SecurityID: this.secToken
+            },
+            fetchPolicy: 'no-cache',
+            context: {
+                headers: {
+                    'X-CSRF-TOKEN': this.secToken
+                }
+            }
+        })
+        .catch(response => {
+            const errors = response.graphQLErrors.map(error => error.message);
+            this.error = errors.join(', ');
+        });
 
         if (response && response.data && response.data.ratingMutation) {
             this.setCookiePage();

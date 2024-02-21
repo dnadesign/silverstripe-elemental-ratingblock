@@ -54,10 +54,10 @@ export class HTTPStore {
         if (
             window.location.hostname === 'localhost'
         ) {
-            return '//localhost/ratingblockgraphql/';
+            return '//localhost/graphql/';
         }
 
-        return `//${location}/ratingblockgraphql/`;
+        return `//${location}/graphql/`;
     }
 
     httpLink = new HttpLink({

@@ -1,38 +1,11 @@
 ---
 Name: ratingblockgraphql
 Only:
-  moduleexists: silverstripe/graphql
+  classexists: 'SilverStripe\GraphQL\Schema\Schema'
 ---
-SilverStripe\Control\Director:
-  rules:
-    ratingblockgraphql:
-      Controller: '%$SilverStripe\GraphQL\Controller.ratingblock'
-      Stage: Live
-      Permissions: false
 
-SilverStripe\GraphQL\Controller:
-  cors:
-    Enabled: true
-    Allow-Origin: '*'
-    Allow-Headers: 'Authorization, Content-Type'
-    Allow-Credentials: 'true'
-    Allow-Methods:  'GET, POST, OPTIONS'
-    Max-Age:  1200 #20 minutes
-
-SilverStripe\Core\Injector\Injector:
-  SilverStripe\GraphQL\Manager.ratingblock:
-    class: SilverStripe\GraphQL\Manager
-    constructor:
-      schemaKey: ratingblock
-  SilverStripe\GraphQL\Controller.ratingblock:
-    class: SilverStripe\GraphQL\Controller
-    constructor:
-      manager: '%$SilverStripe\GraphQL\Manager.ratingblock'
-
-SilverStripe\GraphQL\Manager:
+SilverStripe\GraphQL\Schema\Schema:
   schemas:
-    ratingblock:
-      types:
-        rating: 'DNADesign\Elemental\API\RatingTypeCreator'
-      mutations:
-        ratingMutation: 'DNADesign\Elemental\API\RatingMutation'
+    default:
+      src:
+        - 'dnadesign/silverstripe-elemental-ratingblock: _graphql'

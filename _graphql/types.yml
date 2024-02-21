@@ -1,0 +1,13 @@
+
+rating:
+  fields:
+    ID: ID!
+    Rating: Int
+    Comments: String
+    Tags: String
+    PageName: String
+    PageID: Int
+    URL: String
+    Error:
+      type: String
+      resolver: ['DNADesign\Elemental\GraphQL\Resolvers\RatingUtilityResolver', 'resolveErrorField']

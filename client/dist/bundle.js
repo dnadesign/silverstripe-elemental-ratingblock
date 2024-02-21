@@ -72131,10 +72131,6 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
 
     this.httpStore = props.httpStore;
     this.pageName = props.pageName;
-    this.httpLink = new bundle_esm_HttpLink({
-      uri: this.getApiUri(),
-      credentials: 'same-origin'
-    });
     this.apolloClient = this.setApolloClient();
   }
 
@@ -72144,16 +72140,21 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
       var location = window.location.host;
 
       if (window.location.hostname === 'localhost' || window.location.hostname === '10.0.2.2') {
-        return '//mbie9.test/ratingblockgraphql/';
+        return '//mbie9.test/graphql/';
       }
 
-      return "//".concat(location, "/ratingblockgraphql/");
+      return "//".concat(location, "/graphql/");
     }
   }, {
     key: "setApolloClient",
     value: function setApolloClient() {
+      var httpLink = new bundle_esm_HttpLink({
+        uri: this.getApiUri(),
+        credentials: 'same-origin'
+      });
       return new apollo_client_bundle_esm({
-        link: this.httpStore.authLink.concat(this.httpLink),
+        link: httpLink,
+        // Directly use httpLink without concat
         cache: new bundle_esm_InMemoryCache().restore(window.__APOLLO_STATE__)
       });
     }
@@ -72269,7 +72270,8 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
               case 0:
                 this.loading = true;
                 this.result = {};
-                _context.next = 4;
+                this.secToken = window.bootData.SecurityToken;
+                _context.next = 5;
                 return this.apolloClient.mutate({
                   mutation: RatingMutation,
                   variables: {
@@ -72278,9 +72280,15 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
                     Tags: values.tags,
                     PageName: values.pageName,
                     URL: window.location.toString(),
-                    PageID: values.pageID
+                    PageID: values.pageID,
+                    SecurityID: this.secToken
                   },
-                  fetchPolicy: 'no-cache'
+                  fetchPolicy: 'no-cache',
+                  context: {
+                    headers: {
+                      'X-CSRF-TOKEN': this.secToken
+                    }
+                  }
                 })["catch"](function (response) {
                   var errors = response.graphQLErrors.map(function (error) {
                     return error.message;
@@ -72288,7 +72296,7 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
                   _this.error = errors.join(', ');
                 });
 
-              case 4:
+              case 5:
                 response = _context.sent;
 
                 if (response && response.data && response.data.ratingMutation) {
@@ -72299,7 +72307,7 @@ var app_store_RatingStore = (_class = (_temp = /*#__PURE__*/function () {
                   this.loading = false;
                 }
 
-              case 6:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -72943,10 +72951,10 @@ var http_store_HTTPStore = (http_store_class = (http_store_temp = /*#__PURE__*/f
       var location = window.location.host;
 
       if (window.location.hostname === 'localhost') {
-        return '//localhost/ratingblockgraphql/';
+        return '//localhost/graphql/';
       }
 
-      return "//".concat(location, "/ratingblockgraphql/");
+      return "//".concat(location, "/graphql/");
     }
   }, {
     key: "setApolloClient",
