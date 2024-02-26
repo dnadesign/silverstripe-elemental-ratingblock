@@ -1,0 +1,18 @@
+---
+Name: appapi
+After:
+  - '#graphqlconfig'
+---
+
+SilverStripe\Control\Director:
+  rules:
+    'graphql': '%$SilverStripe\GraphQL\Controller.default'
+
+SilverStripe\GraphQL\Controller:
+  cors:
+    Enabled: true
+    Allow-Origin: '*'
+    Allow-Headers: 'Authorization, Content-Type'
+    Allow-Credentials: 'true'
+    Allow-Methods:  'GET, POST, OPTIONS'
+    Max-Age:  1200 #20 minutes

@@ -1,0 +1,11 @@
+
+ratingMutation:
+  type: 'rating'
+  args:
+    Rating: 'Int'
+    Comments: 'String'
+    Tags: 'String'
+    PageName: 'String'
+    PageID: 'Int'
+    URL: 'String'
+  resolver: ['DNADesign\Elemental\GraphQL\Resolvers\RatingMutationResolver', 'resolve']

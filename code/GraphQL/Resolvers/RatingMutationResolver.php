@@ -1,51 +1,16 @@
 <?php
 
-namespace DNADesign\Elemental\API;
+namespace DNADesign\Elemental\GraphQL\Resolvers;
 
 use DNADesign\Elemental\Models\Rating;
-use SilverStripe\View\ArrayData;
-use SilverStripe\GraphQL\OperationResolver;
-use SilverStripe\GraphQL\MutationCreator;
-use SilverStripe\Core\Convert;
-use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
+use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
+use SilverStripe\Core\Convert;
+use SilverStripe\View\ArrayData;
 
-class RatingMutation extends MutationCreator implements OperationResolver
+class RatingMutationResolver
 {
-
-    public function attributes()
-    {
-        return [
-            'name' => 'ratingMutation',
-            'description' => 'create a page rating'
-        ];
-    }
-
-    public function type()
-    {
-        return $this->manager->getType('rating');
-    }
-
-    /**
-     * @return array
-     */
-    public function args()
-    {
-        return [
-            'Rating' => ['type' => Type::int()],
-            'Comments' => ['type' => Type::string()],
-            'Tags' => ['type' => Type::string()],
-            'PageName' => ['type' => Type::string()],
-            'PageID' => ['type' => Type::int()],
-            'URL' => ['type' => Type::string()]
-        ];
-    }
-
-    /**
-     * create a new Rating
-     */
-    public function resolve($object, array $args, $context, ResolveInfo $info)
+    public static function resolve($rootValue, $args, $context, ResolveInfo $info)
     {
         // Opt out of caching
         HTTPCacheControlMiddleware::singleton()

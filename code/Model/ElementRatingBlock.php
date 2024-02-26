@@ -18,6 +18,7 @@ use SilverStripe\Forms\GridField\GridFieldFilterHeader;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use SilverStripe\Security\SecurityToken;
 
 /**
  * @package elemental
@@ -163,8 +164,15 @@ class ElementRatingBlock extends BaseElement
         $bootData['RatingPageName'] = $this->getPage()->Title;
         $bootData['RatingPageID'] = $this->getPage()->ID;
         $bootData['RatingStars'] = $this->getStars();
+        $bootData['SecurityToken'] = $this->getSecurityToken();
 
         return json_encode($bootData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getSecurityToken()
+    {
+        $securityToken = SecurityToken::create();
+        return $securityToken->getSecurityID();
     }
 
     public function getStars()
