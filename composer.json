@@ -6,7 +6,7 @@
     "require": {
         "silverstripe/framework": "^4.13",
         "silverstripe/graphql": "^4.3",
-        "silverstripe/vendor-plugin": "^2",
+        "silverstripe/vendor-plugin": "^1.7",
         "colymba/gridfield-bulk-editing-tools": "^4.0"
     },
     "require-dev": {
