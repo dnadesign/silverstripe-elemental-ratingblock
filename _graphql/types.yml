@@ -2,7 +2,7 @@
 rating:
   fields:
     ID: ID!
-    Rating: Int
+    RatingScore: Int
     Comments: String
     Tags: String
     PageName: String
