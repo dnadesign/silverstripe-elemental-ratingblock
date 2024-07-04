@@ -5,6 +5,7 @@ namespace DNADesign\Elemental\Models;
 use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Permission;
 use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\Versioned\Versioned;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\CMS\Model\SiteTree;
 
@@ -13,7 +14,7 @@ class Rating extends DataObject implements PermissionProvider
     private static $table_name = 'Rating';
 
     private static $db = [
-        'Rating' => 'Int',
+        'RatingScore' => 'Int',
         'Comments' => 'Text',
         'Tags' => 'Varchar(255)',
         'PageName' => 'Varchar(255)',
@@ -26,7 +27,7 @@ class Rating extends DataObject implements PermissionProvider
 
     private static $summary_fields = [
         'ID' => 'ID',
-        'Rating' => 'Rating',
+        'RatingScore' => 'Rating',
         'getPageType' => 'Page type',
         'Page.Title' => 'Rated Page',
         'getAverage' => 'Page Average',
@@ -39,6 +40,10 @@ class Rating extends DataObject implements PermissionProvider
 
     private static $default_sort = 'ID DESC';
 
+    private static $extensions = [
+        Versioned::class
+    ];
+
     /**
      * Average rating for this PageID
      *
@@ -47,7 +52,7 @@ class Rating extends DataObject implements PermissionProvider
     public function getAverage()
     {
         if ($this->PageID) {
-            return round(Rating::get()->filter('PageID', $this->PageID)->avg('Rating'), 2);
+            return round(Rating::get()->filter('PageID', $this->PageID)->avg('RatingScore'), 2);
         }
     }
 
@@ -84,7 +89,7 @@ class Rating extends DataObject implements PermissionProvider
                 'Created:LessThan' => sprintf('%s 23:59:59', date("Y-m-t", strtotime($this->Created)))
             ]);
 
-            return round($ratings->avg('Rating'), 2);
+            return round($ratings->avg('RatingScore'), 2);
         }
     }
 
@@ -138,8 +143,8 @@ class Rating extends DataObject implements PermissionProvider
                 'name' => 'View Ratings',
                 'category' => 'Ratings'
             ],
-            'DELETE_RATING' => [
-                'name' => 'Delete Ratings',
+            'ARCHIVE_RATING' => [
+                'name' => 'Archive Ratings',
                 'category' => 'Ratings'
             ]
         ];
@@ -157,11 +162,16 @@ class Rating extends DataObject implements PermissionProvider
 
     public function canDelete($member = null)
     {
-        return Permission::check('DELETE_RATING');
+        return false;
     }
 
     public function canView($member = null)
     {
         return Permission::check('VIEW_RATING');
+    }
+
+    public function canArchive($member = null)
+    {
+        return Permission::check('ARCHIVE_RATING');
     }
 }

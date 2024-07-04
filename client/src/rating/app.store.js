@@ -16,7 +16,7 @@ const RatingMutation = gql`
         $PageID: Int
     ) {
         ratingMutation(
-            Rating: $Rating
+            RatingScore: $Rating
             Comments: $Comments
             Tags: $Tags
             PageName: $PageName
@@ -24,7 +24,7 @@ const RatingMutation = gql`
             PageID: $PageID
         ) {
             ID
-            Rating
+            RatingScore
             Comments
             Tags
             PageName

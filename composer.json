@@ -4,13 +4,14 @@
     "type": "silverstripe-vendormodule",
     "license": "BSD-3-Clause",
     "require": {
-        "silverstripe/framework": "^5",
-        "silverstripe/graphql": "^5",
-        "silverstripe/vendor-plugin": "^2",
-        "colymba/gridfield-bulk-editing-tools": "^4.0"
+        "silverstripe/framework": "^4.5",
+        "silverstripe/graphql": "^3",
+        "silverstripe/vendor-plugin": "^1",
+        "colymba/gridfield-bulk-editing-tools": "^3.0"
     },
     "require-dev": {
-        "silverstripe/cms": "^5",
+        "phpunit/phpunit": "^5.7",
+        "silverstripe/cms": "^4.5",
         "silverstripe/graphql-devtools": "dev-master"
     },
     "extra": {

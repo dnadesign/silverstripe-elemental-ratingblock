@@ -36,7 +36,7 @@ class RatingMutationResolver
             }
 
             $rating = Rating::create([
-                'Rating' => Convert::raw2sql($args['Rating']),
+                'RatingScore' => Convert::raw2sql($args['Rating']),
                 'Comments' => Convert::raw2sql($args['Comments']),
                 'Tags' => Convert::raw2sql($args['Tags']),
                 'PageName' => Convert::raw2sql($args['PageName']),

@@ -2,12 +2,21 @@
 
 namespace DNADesign\Elemental\Admins;
 
+use Colymba\BulkManager\BulkAction\ArchiveHandler;
+use Colymba\BulkManager\BulkAction\DeleteHandler;
 use SilverStripe\Admin\ModelAdmin;
-use DNADesign\Elemental\Models\Rating;
-use DNADesign\Elemental\Models\ElementRatingBlock;
+use SilverStripe\Security\Security;
 use Colymba\BulkManager\BulkManager;
-use Colymba\BulkManager\BulkAction\UnlinkHandler;
+use SilverStripe\Security\Permission;
+use DNADesign\Elemental\Models\Rating;
 use Colymba\BulkManager\BulkAction\EditHandler;
+use Colymba\BulkManager\BulkAction\UnlinkHandler;
+use DNADesign\Elemental\Models\ElementRatingBlock;
+use SilverStripe\Versioned\GridFieldArchiveAction;
+use SilverStripe\Forms\GridField\GridFieldPrintButton;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldImportButton;
 
 class RatingAdmin extends ModelAdmin
 {
@@ -28,13 +37,18 @@ class RatingAdmin extends ModelAdmin
 
         $field = $form->Fields()->dataFieldByName($this->sanitiseClassName($this->modelClass));
         $config = $field->getConfig();
+        $member = Security::getCurrentUser();
 
         if ($this->modelClass === Rating::class) {
-            // Add bulk option
-            $manager = new BulkManager();
-            $manager->removeBulkAction(EditHandler::class);
-            $manager->removeBulkAction(UnlinkHandler::class);
-            $config->addComponent($manager);
+            if (Permission::check('ARCHIVE_RATING', 'any', $member)) {
+                // Add bulk option
+                $manager = BulkManager::create();
+                $manager->removeBulkAction(EditHandler::class);
+                $manager->removeBulkAction(UnlinkHandler::class);
+                $manager->removeBulkAction(DeleteHandler::class);
+                $manager->addBulkAction(ArchiveHandler::class);
+                $config->addComponent($manager);
+            }
         }
 
         if ($this->modelClass === ElementRatingBlock::class) {
