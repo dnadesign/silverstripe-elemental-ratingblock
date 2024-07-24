@@ -8,6 +8,7 @@ use DNADesign\Elemental\Models\ElementRatingBlock;
 use Colymba\BulkManager\BulkManager;
 use Colymba\BulkManager\BulkAction\UnlinkHandler;
 use Colymba\BulkManager\BulkAction\EditHandler;
+use SilverStripe\Security\Permission;
 
 class RatingAdmin extends ModelAdmin
 {
@@ -30,19 +31,13 @@ class RatingAdmin extends ModelAdmin
         $config = $field->getConfig();
 
         if ($this->modelClass === Rating::class) {
-            // Add bulk option
-            $manager = new BulkManager();
-            $manager->removeBulkAction(EditHandler::class);
-            $manager->removeBulkAction(UnlinkHandler::class);
-            $config->addComponent($manager);
-        }
-
-        if ($this->modelClass === ElementRatingBlock::class) {
-            $config->removeComponentsByType(GridFieldArchiveAction::class);
-            $config->removeComponentsByType(GridFieldDeleteAction::class);
-            $config->removeComponentsByType(GridFieldExportButton::class);
-            $config->removeComponentsByType(GridFieldPrintButton::class);
-            $config->removeComponentsByType(GridFieldImportButton::class);
+            // if the user has the delete permission then add bulk deletion option
+            if (Permission::check('DELETE_RATING')) {
+                $manager = new BulkManager();
+                $manager->removeBulkAction(EditHandler::class);
+                $manager->removeBulkAction(UnlinkHandler::class);
+                $config->addComponent($manager);
+            }
         }
 
         return $form;
