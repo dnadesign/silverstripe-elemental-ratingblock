@@ -6,6 +6,7 @@ use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Permission;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Versioned\Versioned;
 use SilverStripe\CMS\Model\SiteTree;
 
 class Rating extends DataObject implements PermissionProvider
@@ -35,6 +36,10 @@ class Rating extends DataObject implements PermissionProvider
         'Tags' => 'Tags',
         'URL' => 'Rated URL',
         'Created' => 'Created'
+    ];
+
+    private static $extensions = [
+        Versioned::class
     ];
 
     private static $default_sort = 'ID DESC';
@@ -138,8 +143,8 @@ class Rating extends DataObject implements PermissionProvider
                 'name' => 'View Ratings',
                 'category' => 'Ratings'
             ],
-            'DELETE_RATING' => [
-                'name' => 'Delete Ratings',
+            'ARCHIVE_RATING' => [
+                'name' => 'Archive Ratings',
                 'category' => 'Ratings'
             ]
         ];
@@ -157,7 +162,7 @@ class Rating extends DataObject implements PermissionProvider
 
     public function canDelete($member = null)
     {
-        return Permission::check('DELETE_RATING');
+        return false;
     }
 
     public function canView($member = null)
