@@ -27,17 +27,28 @@ class ElementRatingBlock extends BaseElement
 {
     private static $title = "Rating";
 
-    private static $description = "Custom rating block";
+    private static $description = "Allow visitors to rate pages with stars and optional tags/comments. Perfect for collecting user feedback and satisfaction ratings.";
 
     private static $table_name = 'ElementRatingBlock';
 
     private static $singular_name = 'Rating';
 
-    private static $plural_name = 'Ratings';
+    private static $plural_name = 'Rating Blocks';
 
     private static $controller_class = RatingBlockController::class;
 
     private static $icon = 'font-icon-check-mark-2';
+
+    /**
+     * Configuration properties for CMS streamlining
+     */
+    private static $hide_enable_rating_form = false;
+    private static $hide_rating_form_intro = false;
+    private static $hide_enable_rating_comments = false;
+    private static $remove_settings_tab = false;
+    private static $hide_rating_form_title = false;
+    private static $hide_rating_form_success_message = false;
+    private static $hide_enable_rating_tags = false;
 
     private static $db = [
         'EnableRatingForm' => DBBoolean::class,
@@ -59,32 +70,98 @@ class ElementRatingBlock extends BaseElement
     ];
 
     /**
+     * Get the default value for EnableRatingForm based on configuration
+     */
+    public function populateDefaults()
+    {
+        parent::populateDefaults();
+
+        // If hide_enable_rating_form is true, default EnableRatingForm to true
+        if ($this->config()->get('hide_enable_rating_form')) {
+            $this->EnableRatingForm = true;
+        }
+    }
+
+    /**
      * Update the fields of the page to include Rating specific fields
      */
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $fieldsToAdd = [];
 
-            $fields->addFieldsToTab(
-                'Root.Main',
-                [
-                    CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page'),
-                    CheckboxField::create('EnableRatingTags', 'Enable Rating form tags'),
-                    TextField::create('RatingFormTitle', 'Rating form title'),
-                    HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
-                        ->setEditorConfig('help')
-                        ->setRows(33),
-                    CheckboxField::create('EnableRatingComments', 'Enable Rating comments'),
-                    HTMLEditorField::create('RatingFormSuccessMessage', 'Rating form sucess message')
-                        ->setEditorConfig('help')
-                        ->setRows(3)
-                ]
-            );
+            // Conditionally add fields based on configuration
+            if (!$this->config()->get('hide_enable_rating_form')) {
+                $fieldsToAdd[] = CheckboxField::create('EnableRatingForm', 'Enable Rating form on this page')
+                    ->setDescription('When enabled, visitors can submit ratings for this page. The rating form will appear on the frontend where this block is placed.');
+            }
+
+            if (!$this->config()->get('hide_enable_rating_tags')) {
+                $fieldsToAdd[] = CheckboxField::create('EnableRatingTags', 'Enable Rating form tags')
+                    ->setDescription('When enabled, users can select predefined tags along with their star rating. Configure tags in the "Stars" tab.');
+            }
+
+            if (!$this->config()->get('hide_rating_form_title')) {
+                $fieldsToAdd[] = TextField::create('RatingFormTitle', 'Rating form title')
+                    ->setDescription('The heading that appears above the rating form. Example: "Rate this page" or "How would you rate this content?"')
+                    ->setAttribute('placeholder', 'Rate this page');
+            }
+
+            if (!$this->config()->get('hide_rating_form_intro')) {
+                $fieldsToAdd[] = HTMLEditorField::create('RatingFormIntro', 'Rating form intro')
+                    ->setEditorConfig('help')
+                    ->setRows(3)
+                    ->setDescription('Optional introductory text that appears before the rating form. Use this to provide context or instructions to users about what they are rating.');
+            }
+
+            if (!$this->config()->get('hide_enable_rating_comments')) {
+                $fieldsToAdd[] = CheckboxField::create('EnableRatingComments', 'Enable Rating comments')
+                    ->setDescription('When enabled, users can leave written feedback along with their star rating. Comments are optional for users.');
+            }
+
+            if (!$this->config()->get('hide_rating_form_success_message')) {
+                $fieldsToAdd[] = HTMLEditorField::create('RatingFormSuccessMessage', 'Rating form success message')
+                    ->setEditorConfig('help')
+                    ->setRows(3)
+                    ->setDescription('Message shown to users after they successfully submit a rating. If left empty, a default "Thank you" message will be displayed.');
+            }
+
+            if (!empty($fieldsToAdd)) {
+                $fields->addFieldsToTab('Root.Main', $fieldsToAdd);
+            }
 
             $fields->removeByName(['UseDefaultTags']);
         });
-        
+
         $fields = parent::getCMSFields();
+
+        if ($this->config()->get('hide_enable_rating_form')) {
+            $fields->removeByName('EnableRatingForm');
+        }
+
+        if ($this->config()->get('hide_rating_form_intro')) {
+            $fields->removeByName('RatingFormIntro');
+        }
+
+        if ($this->config()->get('hide_enable_rating_comments')) {
+            $fields->removeByName('EnableRatingComments');
+        }
+
+        if ($this->config()->get('hide_rating_form_title')) {
+            $fields->removeByName('RatingFormTitle');
+        }
+
+        if ($this->config()->get('hide_rating_form_success_message')) {
+            $fields->removeByName('RatingFormSuccessMessage');
+        }
+
+        if ($this->config()->get('hide_enable_rating_tags')) {
+            $fields->removeByName('EnableRatingTags');
+        }
+        // Remove Settings tab if configured
+        if ($this->config()->get('remove_settings_tab')) {
+            $fields->removeByName('Settings');
+        }
 
         $fields->removeByName(['UseDefaultTags']);
         $config = $this->config();
@@ -94,12 +171,15 @@ class ElementRatingBlock extends BaseElement
             $fields->insertAfter(
                 'EnableRatingTags',
                 CheckboxField::create('UseDefaultTags', 'Enable use default tags')
+                    ->setDescription('When enabled, this will automatically create default stars and tags based on your site configuration. Uncheck to manually configure stars and tags in the "Stars" tab.')
             );
         }
 
         $stars = $fields->dataFieldByName('Stars');
 
         if ($stars) {
+            $stars->setDescription('Configure the star ratings for your form. Each star represents a rating level (1-5 stars). You can add tags that users can select for each rating level. Stars are displayed in the order shown here - drag to reorder.');
+
             $injector = Injector::inst();
 
             $config = $stars->getConfig();
@@ -161,8 +241,9 @@ class ElementRatingBlock extends BaseElement
         $bootData['RatingFormIntro'] = (string) $this->owner->dbObject('RatingFormIntro');
         $bootData['EnableRatingComments'] = $this->owner->EnableRatingComments;
         $bootData['RatingFormSuccessMessage'] = (string) $this->owner->dbObject('RatingFormSuccessMessage');
-        $bootData['RatingPageName'] = $this->getPage()->Title;
-        $bootData['RatingPageID'] = $this->getPage()->ID;
+        $page = $this->getPage();
+        $bootData['RatingPageName'] = $page ? $page->Title : '';
+        $bootData['RatingPageID'] = $page ? $page->ID : 0;
         $bootData['RatingStars'] = $this->getStars();
         $bootData['SecurityToken'] = $this->getSecurityToken();
 
