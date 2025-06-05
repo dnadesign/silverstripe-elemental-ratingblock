@@ -49,12 +49,15 @@ class RatingStar extends DataObject
 
         $name = $fields->dataFieldByName('Name');
         if ($name) {
-            $name->setDescription('This name will be displayed when hovering/selecting star');
+            $name->setDescription('This name will be displayed when users hover over or select this star rating. Use descriptive names like "Poor", "Fair", "Good", "Very Good", "Excellent" to help users understand what each rating level means.')
+            ->setAttribute('placeholder', 'e.g. Excellent, Good, Fair...');
         }
 
         $tags = $fields->dataFieldByName('Tags');
 
         if ($tags && $this->isInDB()) {
+            $tags->setDescription('Tags allow users to provide more specific feedback when they select this star rating. For example, if this is a 1-star rating, you might add tags like "Too slow", "Hard to find", "Confusing". Users can select multiple tags along with their rating. Drag to reorder tags.');
+
             $injector = Injector::inst();
 
             $config = $tags->getConfig();
@@ -67,7 +70,8 @@ class RatingStar extends DataObject
             $config->addComponent(new GridFieldOrderableRows('SortOrder'));
         }
 
-        $fields->addFieldToTab('Root.Main', ReadonlyField::create('SortOrder'));
+        $fields->addFieldToTab('Root.Main', ReadonlyField::create('SortOrder')
+            ->setDescription('The position of this star in the rating scale. Lower numbers appear first (1 star = lowest rating, 5 stars = highest rating). Use drag and drop in the parent Stars list to reorder.'));
 
         return $fields;
     }

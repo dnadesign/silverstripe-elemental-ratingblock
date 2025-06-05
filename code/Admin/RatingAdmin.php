@@ -23,6 +23,23 @@ class RatingAdmin extends ModelAdmin
 
     private static $menu_icon_class = 'font-icon-menu-reports';
 
+    /**
+     * Configuration properties for admin interface
+     */
+    private static $hide_main_ratings_tab = false;
+
+    public function getManagedModels()
+    {
+        $models = parent::getManagedModels();
+
+        // Remove Rating model if configured to hide main ratings tab
+        if ($this->config()->get('hide_main_ratings_tab')) {
+            unset($models[Rating::class]);
+        }
+
+        return $models;
+    }
+
     public function getEditForm($id = null, $fields = null)
     {
         $form = parent::getEditForm($id, $fields);

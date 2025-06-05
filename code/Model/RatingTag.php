@@ -13,13 +13,15 @@ class RatingTag extends DataObject
     private static $db = [
         'Name' => 'Varchar(100)',
         'Description' => 'Varchar(255)',
-        'SortOrder' => 'Int'
+        'SortOrder' => 'Int',
+        'UniqueID' => 'Varchar(255)'
     ];
 
     private static $summary_fields = [
         'SortOrder' => 'Order',
         'Name' => 'Name',
-        'Description' => 'Description'
+        'Description' => 'Description',
+        'UniqueID' => 'Unique ID'
     ];
 
     private static $has_one = [
@@ -35,7 +37,28 @@ class RatingTag extends DataObject
         $fields->removeByName('SortOrder');
         $fields->removeByName('StarID');
 
-        $fields->addFieldToTab('Root.Main', ReadonlyField::create('SortOrder'));
+        // Add help text to Name field
+        $name = $fields->dataFieldByName('Name');
+        if ($name) {
+            $name->setDescription('A short, descriptive tag that users can select. Examples: "Too slow", "Easy to use", "Helpful content", "Confusing layout". Keep it concise and specific.')
+            ->setAttribute('placeholder', 'e.g. Easy to use, Too slow...');
+        }
+
+        // Add help text to Description field
+        $description = $fields->dataFieldByName('Description');
+        if ($description) {
+            $description->setDescription('Optional longer description of what this tag means. This is for internal reference and is not shown to users.');
+        }
+
+        $fields->addFieldToTab('Root.Main', ReadonlyField::create('SortOrder')
+            ->setDescription('The order this tag appears in the list for this star rating. Use drag and drop in the parent Tags list to reorder.'));
+
+        // Add UniqueID field
+        $fields->addFieldToTab(
+            'Root.Main',
+            ReadonlyField::create('UniqueID', 'Unique ID')
+                ->setDescription('Automatically generated identifier based on the tag name. Used internally for tracking and analytics. This is created automatically when you save the tag.')
+        );
 
         return $fields;
     }
@@ -70,10 +93,38 @@ class RatingTag extends DataObject
 
     protected function onBeforeWrite()
     {
+        // Generate UniqueID if Name exists and (UniqueID is empty or Name has changed)
+        if ($this->Name && (!$this->UniqueID || $this->isChanged('Name'))) {
+            $this->UniqueID = $this->generateUniqueID($this->Name);
+        }
+
         if (!$this->SortOrder) {
             $this->SortOrder = RatingTag::get()->filter(['StarID' => $this->Star()->ID])->max('SortOrder') + 1;
         }
 
         parent::onBeforeWrite();
+    }
+
+    /**
+     * Generate a unique ID from the name by:
+     * - Converting to lowercase
+     * - Replacing "&" with "and"
+     * - Replacing spaces with hyphens
+     * - Removing non-alphanumeric characters (except hyphens)
+     *
+     * @param string $name The original term name
+     * @return string The generated unique identifier
+     */
+    private function generateUniqueID($name)
+    {
+        return preg_replace(
+            '/[^a-z0-9\-]/',
+            '',
+            str_replace(
+                [' ', '&'],
+                ['-', 'and'],
+                strtolower($name)
+            )
+        );
     }
 }
