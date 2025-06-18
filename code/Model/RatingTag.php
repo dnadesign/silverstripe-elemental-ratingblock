@@ -5,8 +5,10 @@ namespace DNADesign\Elemental\Models;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ValidationResult;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\PermissionProvider;
 
-class RatingTag extends DataObject
+class RatingTag extends DataObject implements PermissionProvider
 {
     private static $table_name = 'RatingTag';
 
@@ -126,5 +128,47 @@ class RatingTag extends DataObject
                 strtolower($name)
             )
         );
+    }
+
+    /**
+     * Provide permissions for rating tag management
+     */
+    public function providePermissions(): array
+    {
+        return [
+            'MANAGE_RATING_TAGS' => 'Manage Rating Tags'
+        ];
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_TAGS permission to create
+     */
+    public function canCreate($member = null, $context = []): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_TAGS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_TAGS permission to edit
+     */
+    public function canEdit($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_TAGS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_TAGS permission to delete
+     */
+    public function canDelete($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_TAGS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_TAGS permission to view
+     */
+    public function canView($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_TAGS');
     }
 }

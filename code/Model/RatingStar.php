@@ -11,8 +11,10 @@ use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\PermissionProvider;
 
-class RatingStar extends DataObject
+class RatingStar extends DataObject implements PermissionProvider
 {
     private static $table_name = 'RatingStar';
 
@@ -83,5 +85,47 @@ class RatingStar extends DataObject
         }
 
         parent::onBeforeWrite();
+    }
+
+    /**
+     * Provide permissions for rating star management
+     */
+    public function providePermissions(): array
+    {
+        return [
+            'MANAGE_RATING_STARS' => 'Manage Rating Stars'
+        ];
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_STARS permission to create
+     */
+    public function canCreate($member = null, $context = []): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_STARS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_STARS permission to edit
+     */
+    public function canEdit($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_STARS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_STARS permission to delete
+     */
+    public function canDelete($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_STARS');
+    }
+
+    /**
+     * Allow users with MANAGE_RATING_STARS permission to view
+     */
+    public function canView($member = null): bool
+    {
+        return Permission::checkMember($member, 'MANAGE_RATING_STARS');
     }
 }
