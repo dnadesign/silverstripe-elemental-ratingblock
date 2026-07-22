@@ -6,7 +6,7 @@ use DNADesign\Elemental\Models\Rating;
 use GraphQL\Type\Definition\ResolveInfo;
 use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
 use SilverStripe\Core\Convert;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 
 class RatingMutationResolver
 {
