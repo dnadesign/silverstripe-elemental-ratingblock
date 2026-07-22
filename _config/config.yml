@@ -1,3 +1,11 @@
+---
+Name: ratingblockconfig
+---
+SilverStripe\Forms\HTMLEditor\HTMLEditorConfig:
+  default_config_definitions:
+    help:
+      configClass: 'SilverStripe\TinyMCE\TinyMCEConfig'
+
 # Default stars and tags example
 # Set yours in code before first dev/build and those should be created automatically
 # DNADesign\Elemental\Models\ElementRatingBlock:
