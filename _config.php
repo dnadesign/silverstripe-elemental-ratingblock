@@ -11,24 +11,23 @@ $helpEditor->setOptions([
 ]);
 
 // Enable insert-link to internal pages
-$cmsModule = ModuleLoader::inst()->getManifest()->getModule('silverstripe/cms');
+$tinymceModule = ModuleLoader::inst()->getManifest()->getModule('silverstripe/htmleditor-tinymce');
 $helpEditor
     ->enablePlugins([
-        'sslinkinternal' => $cmsModule
+        'sslinkinternal' => $tinymceModule
             ->getResource('client/dist/js/TinyMCE_sslink-internal.js'),
-        'sslinkanchor' => $cmsModule
+        'sslinkanchor' => $tinymceModule
             ->getResource('client/dist/js/TinyMCE_sslink-anchor.js'),
     ]);
 
 // Add SilverStripe link options
-$adminModule = ModuleLoader::inst()->getManifest()->getModule('silverstripe/admin');
 $helpEditor
     ->enablePlugins([
         'contextmenu' => null,
         'image' => null,
-        'sslink' => $adminModule->getResource('client/dist/js/TinyMCE_sslink.js'),
-        'sslinkexternal' => $adminModule->getResource('client/dist/js/TinyMCE_sslink-external.js'),
-        'sslinkemail' => $adminModule->getResource('client/dist/js/TinyMCE_sslink-email.js'),
+        'sslink' => $tinymceModule->getResource('client/dist/js/TinyMCE_sslink.js'),
+        'sslinkexternal' => $tinymceModule->getResource('client/dist/js/TinyMCE_sslink-external.js'),
+        'sslinkemail' => $tinymceModule->getResource('client/dist/js/TinyMCE_sslink-email.js'),
     ])
     ->setOption('contextmenu', 'sslink ssmedia ssembed inserttable | cell row column deletetable');
 

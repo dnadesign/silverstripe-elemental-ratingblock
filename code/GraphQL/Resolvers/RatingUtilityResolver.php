@@ -15,4 +15,13 @@ class RatingUtilityResolver
     {
         return $object->AbsoluteLink();
     }
+
+    /**
+     * Placeholder root query. GraphQL requires a schema to have a root Query type
+     * with at least one field; this module otherwise only defines a mutation.
+     */
+    public static function resolveRatingBlockStatus(): string
+    {
+        return 'ok';
+    }
 }

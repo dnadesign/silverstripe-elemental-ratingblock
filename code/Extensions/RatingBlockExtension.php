@@ -3,8 +3,8 @@
 namespace DNADesign\Elemental\Extensions;
 
 use DNADesign\Elemental\Models\ElementRatingBlock;
+use SilverStripe\Core\Extension;
 use SilverStripe\Core\Injector\Injector;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
@@ -17,7 +17,7 @@ use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 
-class RatingBlockExtension extends DataExtension
+class RatingBlockExtension extends Extension
 {
     private static $many_many = [
         'RatingBlock' => ElementRatingBlock::class

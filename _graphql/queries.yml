@@ -1,0 +1,4 @@
+
+ratingBlockStatus:
+  type: 'String'
+  resolver: ['DNADesign\Elemental\GraphQL\Resolvers\RatingUtilityResolver', 'resolveRatingBlockStatus']

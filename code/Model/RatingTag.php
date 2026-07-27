@@ -4,7 +4,7 @@ namespace DNADesign\Elemental\Models;
 
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\ValidationResult;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\PermissionProvider;
 
@@ -65,7 +65,7 @@ class RatingTag extends DataObject implements PermissionProvider
         return $fields;
     }
 
-    public function validate()
+    public function validate(): ValidationResult
     {
         $result = parent::validate();
 
