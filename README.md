@@ -130,3 +130,15 @@ The module includes the following permissions:
 - `VIEW_RATING`: View ratings in the admin
 - `DELETE_RATING`: Delete ratings from the admin
 
+## GraphQL
+
+The module registers a `ratingMutation` (and its `rating` type) on the `default` GraphQL schema, so ratings can be submitted through `/graphql` as an alternative to your own application's rating API. This mutation has no built-in auth or spam protection, so if you're not using it, disable it in your app's `_config`:
+
+```yml
+SilverStripe\GraphQL\Schema\Schema:
+  schemas:
+    default:
+      src:
+        ratingblock: false
+```
+

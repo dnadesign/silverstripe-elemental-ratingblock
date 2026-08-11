@@ -8,4 +8,6 @@ SilverStripe\GraphQL\Schema\Schema:
   schemas:
     default:
       src:
-        - 'dnadesign/silverstripe-elemental-ratingblock: _graphql'
+        # Keyed so consumers can disable this module's
+        # GraphQL schema entirely with `src: ratingblock: false` in their own app yaml
+        ratingblock: 'dnadesign/silverstripe-elemental-ratingblock: _graphql'
